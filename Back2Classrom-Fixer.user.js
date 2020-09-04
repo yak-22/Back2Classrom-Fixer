@@ -1,12 +1,11 @@
 // ==UserScript==
 // @name         Back2Classrom Fixer
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Fix some annoyances Back2Classrom
 // @author       yak22
 // @match        https://njit.back2classroom.app/
 // @grant        none
-// @require https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js
 // ==/UserScript==
 
 let interval = setInterval(() => {
@@ -21,6 +20,7 @@ function main() {
 
     clearInterval(interval);
 
+    //Change classes to 12-hour format
     function convertToTwelve(time) {
 
         let hours = time.substring(0, 2);
@@ -39,4 +39,20 @@ function main() {
     $(".startTime, .endTime").toArray().map((i)=>{
         i.innerText = convertToTwelve(i.innerText);
     });
+
+
+    //Change GPS selector to checkboxes
+    function changeToCheckboxes() {
+        var selectButton = $(".selectButton .tappable").get();
+        selectButton.forEach((e,i)=>{
+            if (e.innerText == "gps_fixed")
+                selectButton[i].innerText = "check_box";
+            if (e.innerText == "gps_not_fixed")
+                selectButton[i].innerText = "check_box_outline_blank";
+        }
+                            );
+    }
+
+    addEventListener("click", changeToCheckboxes);
+    changeToCheckboxes();
 };
